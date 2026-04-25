@@ -3,8 +3,8 @@ import joblib
 import os
 import numpy as np
 
-# إعدادات الصفحة واسمك
-st.set_page_config(page_title="مشروع التخرج - ندى محسن", layout="wide")
+# إعدادات الصفحة
+st.set_page_config(page_title="مشروع التخرج - المهندسة ندى محسن", layout="wide")
 
 # 1. تحميل الموديل
 base_path = os.path.dirname(__file__)
@@ -13,19 +13,17 @@ model_path = os.path.join(base_path, model_name)
 
 try:
     model = joblib.load(model_path)
-    st.success("✅ تم تحميل الموديل بنجاح | إعداد: ندى محسن")
+    st.success("✅ تم تحميل الموديل بنجاح | إعداد: المهندسة ندى محسن")
 except Exception as e:
     st.error(f"خطأ في التحميل: {e}")
     st.stop()
 
-# 2. العنوان واسمك في الواجهة
+# 2. الواجهة الرئيسية
 st.title("🩺 نظام توقع مرض السكري")
-st.markdown(f"### إعداد الطالبة: **ندى محسن**")
+st.markdown(f"### إعداد: **المهندسة ندى محسن**")
 st.write("---")
 
-st.subheader("الرجاء إدخال الـ 17 بيان المطلوبة:")
-
-# 3. تقسيم المدخلات لـ 17 عمود (مقسمة على صفوف عشان الشكل يكون منظم)
+# 3. تنظيم المدخلات (17 حقل) بدون الجملة المحذوفة
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
@@ -55,11 +53,9 @@ with col4:
 
 st.write("---")
 
-# 4. زر التوقع
+# 4. زر التوقع والنتيجة
 if st.button("تحليل النتائج الآن"):
-    # تجميع الـ 17 مدخل في مصفوفة واحدة
     features = np.array([[v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17]])
-    
     prediction = model.predict(features)
     
     st.subheader("النتيجة النهائية:")
@@ -70,4 +66,4 @@ if st.button("تحليل النتائج الآن"):
 
 # تذييل الصفحة
 st.markdown("---")
-st.caption("تم تطوير هذا النظام كجزء من مشروع تخرج الطالبة ندى محسن © 2026")
+st.caption("تم تطوير هذا النظام كجزء من مشروع تخرج المهندسة ندى محسن © 2026")
