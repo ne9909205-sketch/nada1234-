@@ -3,26 +3,29 @@ import joblib
 import os
 import numpy as np
 
-# 1. تحديد مسار الموديل بشكل ديناميكي (عشان يشتغل على السيرفر صح)
+# 1. تحديد المسار البرمجي للمجلد الحالي
 base_path = os.path.dirname(__file__)
-model_path = os.path.join(base_path, 'diabetes_model.pkl')
 
-# 2. تحميل الموديل مع التأكد من وجوده
-if os.path.exists(model_path):
-    model = joblib.load(model_path)
-else:
-    st.error(f"ملف الموديل 'diabetes_model.pkl' مش موجود في الفولدر الرئيسي على GitHub. ارفعه وهتتحل المشكلة!")
+# 2. اسم الملف بالظبط كما ظهر في الصورة (بالأقواس والأرقام)
+# ملحوظة: لو غيرت اسم الملف على جيت هاب لـ diabetes_model.pkl لازم تغير الاسم هنا كمان
+model_name = 'diabetes_model (3) (1).pkl'
+model_path = os.path.join(base_path, model_name)
+
+# 3. محاولة تحميل الموديل
+try:
+    if os.path.exists(model_path):
+        model = joblib.load(model_path)
+        st.success("✅ تم تحميل الموديل بنجاح!")
+    else:
+        st.error(f"❌ ملف الموديل غير موجود بالاسم ده: {model_name}")
+        st.info("تأكد من رفع الملف بنفس الاسم بالظبط على GitHub")
+        st.stop()
+except Exception as e:
+    st.error(f"حدث خطأ أثناء تحميل الموديل: {e}")
     st.stop()
 
-# 3. واجهة المستخدم (تعديل بسيط لشكل الأبلكيشن)
-st.title("Diabetes Prediction App")
-st.write("أدخل البيانات المطلوبة للتوقع:")
+# 4. واجهة التطبيق
+st.title("نظام توقع مرض السكري")
+st.write("قم بإدخال البيانات المطلوبة للحصول على التوقع")
 
-# هنا ضيف المدخلات بتاعتك (مثال)
-# glucose = st.number_input("Glucose")
-# bmi = st.number_input("BMI")
-# age = st.number_input("Age")
-
-# if st.button("Predict"):
-#     prediction = model.predict([[glucose, bmi, age]])
-#     st.success(f"النتيجة: {prediction[0]}")
+# مثال لمدخلات (
