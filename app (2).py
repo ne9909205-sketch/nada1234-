@@ -1,31 +1,28 @@
 import streamlit as st
-import pandas as pd
 import joblib
+import os
+import numpy as np
 
-# 1. تحميل النموذج والـ Scaler
-model = joblib.load('diabetes_model.pkl')
-scaler = joblib.load('scaler.pkl')
+# 1. تحديد مسار الموديل بشكل ديناميكي (عشان يشتغل على السيرفر صح)
+base_path = os.path.dirname(__file__)
+model_path = os.path.join(base_path, 'diabetes_model.pkl')
 
-st.title("نظام الكشف المبكر عن السكري")
-st.write("أدخل بيانات المريض للتنبؤ بنسبة الخطورة")
+# 2. تحميل الموديل مع التأكد من وجوده
+if os.path.exists(model_path):
+    model = joblib.load(model_path)
+else:
+    st.error(f"ملف الموديل 'diabetes_model.pkl' مش موجود في الفولدر الرئيسي على GitHub. ارفعه وهتتحل المشكلة!")
+    st.stop()
 
-# 2. إنشاء خانات لإدخال البيانات (أمثلة بناءً على ملفك)
-age = st.number_input("العمر", min_value=1, max_value=120)
-gender = st.selectbox("الجنس", options=[0, 1]) # 0 للأنثى و 1 للذكر مثلاً
-hb1ac = st.number_input("مستوى HbA1c")
+# 3. واجهة المستخدم (تعديل بسيط لشكل الأبلكيشن)
+st.title("Diabetes Prediction App")
+st.write("أدخل البيانات المطلوبة للتوقع:")
 
-# 3. زر التوقع
-if st.button("تحليل النتيجة"):
-    # تجهيز البيانات المدخلة في مصفوفة
-    input_data = [[age, gender, hb1ac]] # أضيفي باقي الأعمدة هنا بنفس ترتيب التدريب
-    
-    # توحيد المقاسات (Scaling)
-    input_scaled = scaler.transform(input_data)
-    
-    # التوقع
-    prediction = model.predict(input_scaled)
-    
-    if prediction[0] == 1:
-        st.error("النتيجة: خطورة عالية للإصابة بالسكري")
-    else:
-        st.success("النتيجة: خطورة منخفضة")
+# هنا ضيف المدخلات بتاعتك (مثال)
+# glucose = st.number_input("Glucose")
+# bmi = st.number_input("BMI")
+# age = st.number_input("Age")
+
+# if st.button("Predict"):
+#     prediction = model.predict([[glucose, bmi, age]])
+#     st.success(f"النتيجة: {prediction[0]}")
