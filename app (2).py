@@ -1,32 +1,41 @@
 import streamlit as st
 
-# عنوان التطبيق كما في الصورة
-st.markdown("<h2 style='text-align: right;'>نظام توقع مرض السكري</h2>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: right;'>إعداد: المهندسة ندى</p>", unsafe_allow_html=True)
+# جعل الصفحة عريضة جداً لتناسب الـ 17 خانة
+st.set_page_config(layout="wide", page_title="Diabetes Prediction System")
 
-# تقسيم الشاشة إلى عمودين لتنظيم الحقول كما في الصورة
-col1, col2 = st.columns(2)
+# تصميم العنوان باسمك الكامل
+st.markdown("""
+    <style>
+    .main-title { font-size:35px !important; text-align: center; color: #1E88E5; font-weight: bold; }
+    .sub-title { font-size:20px !important; text-align: center; color: #555; margin-bottom: 30px; }
+    </style>
+    """, unsafe_allow_html=True)
 
-with col1:
-    # حقل نسبة الكوليسترول (رقم صحيح)
-    cholesterol = st.number_input("نسبة الكوليسترول", min_value=0, value=0, step=1)
-    
-    # حقل النشاط البدني
-    physical_activity = st.number_input("النشاط البدني", min_value=0, value=0, step=1)
-    
-    # حقل التدخين (قائمة اختيار لضمان إدخال 0 أو 1)
-    smoking = st.selectbox("التدخين (0 أو 1)", options=[0, 1], help="0 لغير المدخن، 1 للمدخن")
+st.markdown('<p class="main-title">نظام توقع مرض السكري</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-title">إعداد المهندسة: ندى محسن</p>', unsafe_allow_html=True)
 
-with col2:
-    # حقل BMI (يسمح بكسور عشرية)
-    bmi = st.number_input("BMI مؤشر الكتلة", min_value=0.0, value=0.0, step=0.1, format="%.2f")
-    
-    # حقل تاريخ العائلة
-    family_history = st.number_input("تاريخ العائلة", min_value=0.0, value=0.0, step=0.1)
-    
-    # حقل عدد مرات الحمل
-    pregnancies = st.number_input("عدد مرات الحمل", min_value=0, value=0, step=1)
+st.divider()
 
-# زر التوقع
-if st.button("تحليل النتيجة"):
-    st.success("تم استقبال البيانات بنجاح جاري التحليل...")
+# قائمة بـ 17 مدخلاً احترافياً لمشروع تخرجك
+features = [
+    "عمر المريض", "BMI مؤشر الكتلة", "ضغط الدم الانقباضي", "ضغط الدم الانبساطي", 
+    "عدد مرات الحمل", "مستوى الجلوكوز", "نسبة الكوليسترول", "الأنسولين", 
+    "تاريخ العائلة", "النشاط البدني", "التدخين (0 أو 1)", "الهيموجلوبين A1c", 
+    "الدهون الثلاثية", "كوليسترول LDL", "كوليسترول HDL", "سماكة الجلد", "معدل ضربات القلب"
+]
+
+# تقسيم المدخلات على 4 أعمدة لتنظيم الـ 17 خانة
+cols = st.columns(4)
+user_inputs = []
+
+for i, feature in enumerate(features):
+    with cols[i % 4]:
+        val = st.number_input(f"{feature}", value=0.0, step=0.1, key=f"input_{i}")
+        user_inputs.append(val)
+
+st.divider()
+
+# زر التحليل النهائي
+if st.button("تحليل كافة النتائج"):
+    st.balloons()
+    st.success(f"تم استقبال كافة النتائج الـ 17 بنجاح. بالتوفيق في مشروع التخرج يا بشمهندسة ندى!")
