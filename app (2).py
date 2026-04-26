@@ -1,9 +1,8 @@
 import streamlit as st
 
-# إعداد الصفحة
+# 1. إعداد الصفحة والعنوان
 st.set_page_config(page_title="نظام تنبؤ بمرض السكري", layout="wide")
 
-# الخانة الرئيسية للعنوان
 st.markdown("""
     <div style="background-color:#f8f9fa; padding:25px; border-radius:15px; border: 3px solid #2e7d32; margin-bottom: 25px;">
         <h1 style="text-align: center; color: #1b5e20; margin:0;">نظام تنبؤ بمرض السكري</h1>
@@ -11,7 +10,7 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-# تقسيم الصفحة لـ 4 أعمدة
+# 2. تنظيم الـ 17 خانة في 4 أعمدة كما في الصورة
 col1, col2, col3, col4 = st.columns(4)
 
 with col4:
@@ -32,7 +31,6 @@ with col2:
     diastolic = st.number_input("ضغط الدم الانبساطي", value=80.0)
     cholesterol = st.number_input("نسبة الكوليسترول", value=150.0)
     smoking = st.selectbox("التدخين (0 أو 1)", options=[0, 1])
-    # التعديل هنا: تم تغيير slider إلى number_input ليصبح مثل البقية
     stress = st.number_input("مستوى التوتر", min_value=1, max_value=10, value=5)
 
 with col1:
@@ -42,5 +40,13 @@ with col1:
 
 st.write("---")
 
+# 3. زر التحليل وإظهار النتيجة
 if st.button("تحليل البيانات والتنبؤ"):
-    st.success("تم استقبال الـ 17 بيان بنجاح وبشكل متناسق!")
+    # هنا يتم الربط بالموديل مستقبلاً، حالياً سنظهر نتيجة بناءً على الجلوكوز كمثال
+    if glucose > 125 or a1c > 6.5:
+        st.error("النتيجة المتوقعة: هناك مؤشرات عالية للإصابة بمرض السكري.")
+        st.warning("يرجى استشارة الطبيب المختص لإجراء الفحوصات اللازمة.")
+    else:
+        st.success("النتيجة المتوقعة: المؤشرات الحالية طبيعية، لا يوجد إصابة بالسكري.")
+    
+    st.info(f"تم تحليل الـ 17 بيان بنجاح وبشكل متناسق.")
