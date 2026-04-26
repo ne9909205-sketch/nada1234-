@@ -1,9 +1,9 @@
 import streamlit as st
 
-# 1. إعداد الصفحة لتكون بعرض الشاشة
+# إعداد الصفحة
 st.set_page_config(page_title="نظام تنبؤ بمرض السكري", layout="wide")
 
-# 2. الخانة الرئيسية للعنوان
+# الخانة الرئيسية للعنوان
 st.markdown("""
     <div style="background-color:#f8f9fa; padding:25px; border-radius:15px; border: 3px solid #2e7d32; margin-bottom: 25px;">
         <h1 style="text-align: center; color: #1b5e20; margin:0;">نظام تنبؤ بمرض السكري</h1>
@@ -11,7 +11,7 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
-# 3. توزيع الـ 17 خانة على 4 أعمدة (لتجنب أخطاء السطور)
+# تقسيم الصفحة لـ 4 أعمدة
 col1, col2, col3, col4 = st.columns(4)
 
 with col4:
@@ -32,7 +32,8 @@ with col2:
     diastolic = st.number_input("ضغط الدم الانبساطي", value=80.0)
     cholesterol = st.number_input("نسبة الكوليسترول", value=150.0)
     smoking = st.selectbox("التدخين (0 أو 1)", options=[0, 1])
-    stress = st.slider("مستوى التوتر", 1, 10, 5)
+    # التعديل هنا: تم تغيير slider إلى number_input ليصبح مثل البقية
+    stress = st.number_input("مستوى التوتر", min_value=1, max_value=10, value=5)
 
 with col1:
     systolic = st.number_input("ضغط الدم الانقباضي", value=120.0)
@@ -41,8 +42,5 @@ with col1:
 
 st.write("---")
 
-# 4. زر التنبؤ النهائي
 if st.button("تحليل البيانات والتنبؤ"):
-    # جمع البيانات للتأكد من اكتمال الـ 17 بيان
-    total_inputs = [age, activity, skin, family_history, alcohol, bmi, glucose, ldl, diet, sleep, diastolic, cholesterol, smoking, stress, systolic, insulin, a1c]
-    st.success(f"تم بنجاح استقبال الـ {len(total_inputs)} بيان. النظام جاهز للتنبؤ.")
+    st.success("تم استقبال الـ 17 بيان بنجاح وبشكل متناسق!")
